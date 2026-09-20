@@ -1,11 +1,13 @@
-styles_css = """@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 
 html, body, [class*="css"] {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     color: #0F172A;
 }
 
-.stApp { background-color: #FFFFFF; }
+.stApp {
+    background-color: #FFFFFF;
+}
 
 .main .block-container {
     padding-top: 2rem;
@@ -13,10 +15,17 @@ html, body, [class*="css"] {
     max-width: 1180px;
 }
 
-#MainMenu, footer, header { visibility: hidden; }
-.stDeployButton { display: none; }
+#MainMenu, footer, header {
+    visibility: hidden;
+}
 
-/* Typography */
+.stDeployButton {
+    display: none;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
 h1, h2, h3, h4, h5, h6 {
     font-family: 'Inter', sans-serif;
     color: #0F172A;
@@ -24,7 +33,20 @@ h1, h2, h3, h4, h5, h6 {
     letter-spacing: -0.02em;
 }
 
-/* Labels above inputs */
+h1 { font-size: 40px; line-height: 1.1; margin-bottom: 8px; }
+h2 { font-size: 28px; line-height: 1.2; margin-bottom: 8px; }
+h3 { font-size: 20px; line-height: 1.3; margin-bottom: 6px; }
+
+p, li, span {
+    font-family: 'Inter', sans-serif;
+    color: #334155;
+    line-height: 1.6;
+    font-size: 15px;
+}
+
+/* ============================================================
+   LABELS ABOVE INPUTS
+   ============================================================ */
 label {
     font-family: 'Inter', sans-serif !important;
     font-size: 11px !important;
@@ -35,7 +57,9 @@ label {
     margin-bottom: 8px !important;
 }
 
-/* Selectbox and inputs */
+/* ============================================================
+   INPUTS + SELECTBOXES
+   ============================================================ */
 .stSelectbox > div > div,
 .stTextInput > div > div > input,
 .stNumberInput > div > div > input {
@@ -47,62 +71,89 @@ label {
     font-size: 15px !important;
     padding: 12px 14px !important;
     min-height: 46px !important;
+    box-shadow: none !important;
 }
 
 .stSelectbox > div > div:hover,
-.stTextInput > div > div > input:hover {
+.stTextInput > div > div > input:hover,
+.stNumberInput > div > div > input:hover {
     border-color: #CBD5E1 !important;
 }
 
 .stSelectbox > div > div:focus-within,
-.stTextInput > div > div > input:focus {
+.stTextInput > div > div > input:focus,
+.stNumberInput > div > div > input:focus {
     border-color: #0F172A !important;
     box-shadow: 0 0 0 3px rgba(15, 23, 42, 0.08) !important;
+    outline: none !important;
 }
 
-/* Remove slider visual clutter */
-.stSlider { display: none; }
+/* Hide number input stepper buttons */
+.stNumberInput button {
+    background: #F8FAFC !important;
+    border: 1px solid #E5E7EB !important;
+    color: #64748B !important;
+}
 
-/* Buttons — PriceLens style */
-.stButton > button {
+.stNumberInput button:hover {
+    background: #F1F5F9 !important;
+    color: #0F172A !important;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+/* Primary (active nav + CTA) */
+.stButton > button[kind="primary"],
+.stButton > button[kind="primaryFormSubmit"],
+.stButton > button:not([kind]) {
     background: #EF4444 !important;
     color: #FFFFFF !important;
-    border: none !important;
+    border: 1px solid #EF4444 !important;
     border-radius: 10px !important;
-    padding: 14px 28px !important;
-    font-size: 15px !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
     font-weight: 600 !important;
     font-family: 'Inter', sans-serif !important;
     transition: all 0.15s ease !important;
     box-shadow: 0 1px 3px rgba(239, 68, 68, 0.2) !important;
 }
 
-.stButton > button:hover {
+.stButton > button[kind="primary"]:hover,
+.stButton > button[kind="primaryFormSubmit"]:hover,
+.stButton > button:not([kind]):hover {
     background: #DC2626 !important;
+    border-color: #DC2626 !important;
     transform: translateY(-1px) !important;
-    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.25) !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25) !important;
 }
 
-.stButton > button:focus {
-    outline: none !important;
-    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25) !important;
-}
-
-/* Secondary buttons (nav) — outline style */
+/* Secondary (inactive nav) */
 .stButton > button[kind="secondary"] {
     background: #FFFFFF !important;
-    color: #0F172A !important;
+    color: #64748B !important;
     border: 1px solid #E5E7EB !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    font-family: 'Inter', sans-serif !important;
     box-shadow: none !important;
+    transition: all 0.15s ease !important;
 }
 
 .stButton > button[kind="secondary"]:hover {
     background: #F8FAFC !important;
+    color: #0F172A !important;
     border-color: #CBD5E1 !important;
     transform: none !important;
+    box-shadow: none !important;
 }
 
-/* Tabs */
+/* ============================================================
+   TABS
+   ============================================================ */
 .stTabs [data-baseweb="tab-list"] {
     gap: 4px;
     background: transparent;
@@ -128,31 +179,20 @@ label {
 
 .stTabs [aria-selected="true"] {
     color: #0F172A !important;
-    border-bottom: 2px solid #0F172A !important;
+    border-bottom: 2px solid #DC2626 !important;
     font-weight: 600 !important;
     background: transparent !important;
 }
 
-.stTabs [data-baseweb="tab-highlight"] { background: transparent !important; }
-
-/* Dataframes */
-.stDataFrame {
-    background: #FFFFFF;
-    border: 1px solid #E5E7EB;
-    border-radius: 12px;
-    overflow: hidden;
+.stTabs [data-baseweb="tab-highlight"] {
+    background: transparent !important;
 }
 
-/* Dividers */
-hr {
-    border: none;
-    border-top: 1px solid #E5E7EB;
-    margin: 40px 0;
-}
-
-/* Radio buttons */
+/* ============================================================
+   RADIO BUTTONS
+   ============================================================ */
 .stRadio > div {
-    gap: 8px;
+    gap: 12px;
 }
 
 .stRadio label {
@@ -163,7 +203,28 @@ hr {
     font-weight: 500 !important;
 }
 
-/* Expanders */
+/* ============================================================
+   DATAFRAMES
+   ============================================================ */
+.stDataFrame {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* ============================================================
+   DIVIDERS
+   ============================================================ */
+hr {
+    border: none;
+    border-top: 1px solid #E5E7EB;
+    margin: 40px 0;
+}
+
+/* ============================================================
+   EXPANDERS
+   ============================================================ */
 .streamlit-expanderHeader {
     background: #F8FAFC;
     border: 1px solid #E5E7EB;
@@ -179,7 +240,9 @@ hr {
     border-top: none;
 }
 
-/* Alerts */
+/* ============================================================
+   ALERTS
+   ============================================================ */
 .stAlert {
     background: #F8FAFC;
     border: 1px solid #E5E7EB;
@@ -187,13 +250,39 @@ hr {
     color: #0F172A;
 }
 
-/* Scrollbars */
-::-webkit-scrollbar { width: 8px; height: 8px; }
-::-webkit-scrollbar-track { background: #F8FAFC; }
-::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 4px; }
-"""
+/* ============================================================
+   SCROLLBARS
+   ============================================================ */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
 
-with open('styles.css', 'w') as f:
-    f.write(styles_css)
+::-webkit-scrollbar-track {
+    background: #F8FAFC;
+}
 
-print("✅ styles.css rebuilt")
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
+
+/* ============================================================
+   TEXT UTILITIES
+   ============================================================ */
+.text-success { color: #059669; }
+.text-warning { color: #D97706; }
+.text-danger { color: #DC2626; }
+.text-muted { color: #64748B; }
+.mono { font-family: 'JetBrains Mono', monospace; }
+
+/* ============================================================
+   PLOTLY CHART CONTAINERS
+   ============================================================ */
+.js-plotly-plot {
+    border-radius: 12px;
+}
