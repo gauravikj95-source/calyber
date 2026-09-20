@@ -86,10 +86,22 @@ def kpi_card(label, value, subtext=None, color=None):
     sub_html = ""
     if subtext:
         sub_html = '<div style="color: #94A3B8; font-size: 13px; margin-top: 8px;">' + subtext + '</div>'
+
+    # Auto-scale font size based on value length
+    value_str = str(value)
+    if len(value_str) > 12:
+        font_size = "20px"
+    elif len(value_str) > 8:
+        font_size = "24px"
+    elif len(value_str) > 6:
+        font_size = "28px"
+    else:
+        font_size = "34px"
+
     html = (
-        '<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 24px 26px; height: 100%;">'
+        '<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 24px 26px; height: 100%; overflow: hidden;">'
         '<div style="color: #64748B; font-size: 13px; font-weight: 500; margin-bottom: 12px;">' + label + '</div>'
-        '<div style="color: ' + accent + '; font-size: 34px; font-weight: 800; line-height: 1; font-family: Inter, sans-serif; letter-spacing: -0.02em;">' + str(value) + '</div>'
+        '<div style="color: ' + accent + '; font-size: ' + font_size + '; font-weight: 800; line-height: 1.15; font-family: Inter, sans-serif; letter-spacing: -0.02em; word-break: keep-all;">' + value_str + '</div>'
         + sub_html +
         '</div>'
     )
