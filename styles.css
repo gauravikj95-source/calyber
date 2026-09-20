@@ -170,48 +170,55 @@ label {
 }
 
 /* ============================================================
-   TABS
+   TABS — Pill style
    ============================================================ */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 4px;
+    gap: 8px;
     background: transparent;
-    border-bottom: 1px solid #E5E7EB;
-    padding-bottom: 0;
+    border: none;
+    padding: 0;
     margin-bottom: 32px;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .stTabs [data-baseweb="tab"] {
-    background: transparent;
+    background: #FFFFFF;
     color: #64748B;
     font-family: 'Inter', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
-    padding: 16px 20px;
-    border-radius: 0;
-    border-bottom: 2px solid transparent;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid #E5E7EB;
+    transition: all 0.15s ease;
+    height: auto;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
+    background: #F8FAFC;
     color: #0F172A;
-    background: transparent;
+    border-color: #CBD5E1;
 }
 
 .stTabs [aria-selected="true"] {
-    color: #0F172A !important;
-    border-bottom: 2px solid #DC2626 !important;
+    background: #0F172A !important;
+    color: #FFFFFF !important;
+    border-color: #0F172A !important;
     font-weight: 600 !important;
-    background: transparent !important;
 }
 
 .stTabs [data-baseweb="tab-highlight"] {
     background: transparent !important;
 }
 
+.stTabs [data-baseweb="tab-border"] {
+    background: transparent !important;
+}
+
 .stTabs [role="tabpanel"] {
     padding-top: 8px;
 }
-
 /* ============================================================
    RADIO BUTTONS
    ============================================================ */
