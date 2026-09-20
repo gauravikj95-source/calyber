@@ -170,12 +170,12 @@ label {
 }
 
 /* ============================================================
-   TABS — Pill style
+   TABS — Underline style with spacing
    ============================================================ */
 .stTabs [data-baseweb="tab-list"] {
-    gap: 8px;
+    gap: 24px;
     background: transparent;
-    border: none;
+    border-bottom: 1px solid #E5E7EB;
     padding: 0;
     margin-bottom: 32px;
     display: flex;
@@ -183,40 +183,38 @@ label {
 }
 
 .stTabs [data-baseweb="tab"] {
-    background: #FFFFFF;
+    background: transparent;
     color: #64748B;
     font-family: 'Inter', sans-serif;
-    font-size: 14px;
+    font-size: 15px;
     font-weight: 500;
-    padding: 10px 18px;
-    border-radius: 999px;
-    border: 1px solid #E5E7EB;
-    transition: all 0.15s ease;
-    height: auto;
+    padding: 12px 0;
+    border-radius: 0;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
     letter-spacing: -0.005em;
+    transition: color 0.15s ease, border-color 0.15s ease;
+    height: auto;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
-    background: #F8FAFC;
     color: #0F172A;
-    border-color: #CBD5E1;
+    background: transparent;
 }
 
 .stTabs [data-baseweb="tab"][aria-selected="true"] {
-    background: #0F172A !important;
-    border-color: #0F172A !important;
+    background: transparent !important;
+    border-bottom: 2px solid #DC2626 !important;
 }
 
-.stTabs [data-baseweb="tab"][aria-selected="true"] p,
-.stTabs [data-baseweb="tab"][aria-selected="true"] div,
-.stTabs [data-baseweb="tab"][aria-selected="true"] span {
-    color: #FFFFFF !important;
+.stTabs [data-baseweb="tab"][aria-selected="true"] * {
+    color: #0F172A !important;
     font-weight: 600 !important;
 }
 
-/* Also handle nested text elements */
-.stTabs [data-baseweb="tab"][aria-selected="true"] * {
-    color: #FFFFFF !important;
+.stTabs [data-baseweb="tab"][aria-selected="false"] * {
+    color: #64748B !important;
+    font-weight: 500 !important;
 }
 
 .stTabs [data-baseweb="tab-highlight"] {
@@ -228,7 +226,7 @@ label {
 }
 
 .stTabs [role="tabpanel"] {
-    padding-top: 8px;
+    padding-top: 24px;
 }
 
 /* ============================================================
