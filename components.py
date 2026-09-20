@@ -234,3 +234,8 @@ def dual_bar_chart(data, x, y1, y2, label1="Baseline", label2="Calyber", height=
     layout["legend"] = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color="#64748B", size=11))
     fig.update_layout(**layout)
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
+
+
+def centered_container():
+    """Returns a context for centered content."""
+    return st.container()
