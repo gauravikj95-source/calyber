@@ -78,6 +78,24 @@ def render_nav():
                 st.rerun()
 
 
+def tab_bar(items, key_prefix):
+    """Full-width button tab bar."""
+    state_key = key_prefix + "_selected"
+    if state_key not in st.session_state:
+        st.session_state[state_key] = items[0]
+
+    cols = st.columns(len(items), gap="small")
+    for col, item in zip(cols, items):
+        with col:
+            is_active = st.session_state[state_key] == item
+            btn_type = "primary" if is_active else "secondary"
+            if st.button(item, key=key_prefix + "_" + item, use_container_width=True, type=btn_type):
+                st.session_state[state_key] = item
+                st.rerun()
+
+    return st.session_state[state_key]
+
+
 # ============================================================
 # OVERVIEW
 # ============================================================
@@ -131,9 +149,15 @@ elif st.session_state.section == "Predict":
         "Six prediction tools built on 54,132 Mumbai trips. Forecast fares, check fairness, estimate wait times, and detect anomalies before you commit."
     )
 
-    tabs = st.tabs(["Fare Forecast", "Fairness Score", "Wait Time", "Cancellation Risk", "Surge Timing", "Anomaly Detection"])
+    active_tab = tab_bar(
+        ["Fare Forecast", "Fairness Score", "Wait Time", "Cancellation Risk", "Surge Timing", "Anomaly Detection"],
+        key_prefix="predict_tabs"
+    )
 
-    with tabs[0]:
+    st.markdown("---")
+
+    # --- Fare Forecast ---
+    if active_tab == "Fare Forecast":
         st.markdown("### Fare Forecast")
         st.markdown("Predict your fare for the next 2 hours.")
         st.markdown("")
@@ -172,7 +196,8 @@ elif st.session_state.section == "Predict":
                     unsafe_allow_html=True
                 )
 
-    with tabs[1]:
+    # --- Fairness Score ---
+    elif active_tab == "Fairness Score":
         st.markdown("### Fairness Score")
         st.markdown("Will this ride be fair?")
         st.markdown("")
@@ -208,7 +233,8 @@ elif st.session_state.section == "Predict":
                     unsafe_allow_html=True
                 )
 
-    with tabs[2]:
+    # --- Wait Time ---
+    elif active_tab == "Wait Time":
         st.markdown("### Wait Time Forecast")
         st.markdown("")
 
@@ -239,7 +265,8 @@ elif st.session_state.section == "Predict":
                     unsafe_allow_html=True
                 )
 
-    with tabs[3]:
+    # --- Cancellation Risk ---
+    elif active_tab == "Cancellation Risk":
         st.markdown("### Cancellation Risk")
         st.markdown("")
 
@@ -271,7 +298,8 @@ elif st.session_state.section == "Predict":
                     unsafe_allow_html=True
                 )
 
-    with tabs[4]:
+    # --- Surge Timing ---
+    elif active_tab == "Surge Timing":
         st.markdown("### Surge Timing")
         st.markdown("")
 
@@ -307,7 +335,8 @@ elif st.session_state.section == "Predict":
                     unsafe_allow_html=True
                 )
 
-    with tabs[5]:
+    # --- Anomaly Detection ---
+    elif active_tab == "Anomaly Detection":
         st.markdown("### Anomaly Detection")
         st.markdown("Is your fare suspicious?")
         st.markdown("")
@@ -359,9 +388,15 @@ elif st.session_state.section == "Decide":
         "Three tools to compare vehicles, routes, and what-if scenarios. Understand the trade-offs before you decide."
     )
 
-    tabs = st.tabs(["Vehicle Recommender", "Route Comparison", "What-If Explorer"])
+    active_tab = tab_bar(
+        ["Vehicle Recommender", "Route Comparison", "What-If Explorer"],
+        key_prefix="decide_tabs"
+    )
 
-    with tabs[0]:
+    st.markdown("---")
+
+    # --- Vehicle Recommender ---
+    if active_tab == "Vehicle Recommender":
         st.markdown("### Vehicle Recommender")
         st.markdown("")
 
@@ -397,7 +432,8 @@ elif st.session_state.section == "Decide":
                     unsafe_allow_html=True
                 )
 
-    with tabs[1]:
+    # --- Route Comparison ---
+    elif active_tab == "Route Comparison":
         st.markdown("### Route Comparison")
         st.markdown("")
 
@@ -433,7 +469,8 @@ elif st.session_state.section == "Decide":
                     unsafe_allow_html=True
                 )
 
-    with tabs[2]:
+    # --- What-If Explorer ---
+    elif active_tab == "What-If Explorer":
         st.markdown("### What-If Explorer")
         st.markdown("")
 
@@ -480,9 +517,15 @@ elif st.session_state.section == "Compare":
         "See how the fairness-aware policy differs from the current system, fare by fare, quartile by quartile, weather by weather."
     )
 
-    tabs = st.tabs(["Policy Simulator", "Fairness Analysis"])
+    active_tab = tab_bar(
+        ["Policy Simulator", "Fairness Analysis"],
+        key_prefix="compare_tabs"
+    )
 
-    with tabs[0]:
+    st.markdown("---")
+
+    # --- Policy Simulator ---
+    if active_tab == "Policy Simulator":
         st.markdown("### Policy Simulator")
         st.markdown("")
 
@@ -524,7 +567,8 @@ elif st.session_state.section == "Compare":
                     unsafe_allow_html=True
                 )
 
-    with tabs[1]:
+    # --- Fairness Analysis ---
+    elif active_tab == "Fairness Analysis":
         st.markdown("### Fairness Analysis")
         st.markdown("Where does the pricing system fail?")
         st.markdown("")
