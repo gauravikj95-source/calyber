@@ -1,0 +1,18 @@
+Metric,Value
+Total Trips,54132.0
+Baseline Avg Surge,1.3479
+Calyber Avg Surge,1.2515
+Surge Reduction %,7.15
+Baseline Avg Fare,130.85
+Calyber Avg Fare,122.2
+Avg Savings,8.65
+Baseline Revenue,7083042.43
+Calyber Revenue,6615061.49
+Revenue Impact %,-6.61
+Extreme Surge Trips (Baseline),1145.0
+Extreme Surge Trips (Calyber),0.0
+High Surge Trips (Baseline),14224.0
+High Surge Trips (Calyber),545.0
+Avg Wait Time,3.74
+Prime Member %,38.09
+Monsoon Trip %,18.8
