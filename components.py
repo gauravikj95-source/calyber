@@ -85,11 +85,19 @@ def kpi_card(label, value, subtext=None, color=None):
     accent = color or COLORS["text"]
     sub_html = ""
     if subtext:
-        sub_html = '<div style="color: #94A3B8; font-size: 20px; margin-top: 8px;">' + subtext + '</div>'
+        sub_html = '<div style="color: #94A3B8; font-size: 13px; margin-top: 8px;">' + subtext + '</div>'
+
+    value_str = str(value)
+    # Auto-shrink font for long values like "Overpriced" or "Underpriced"
+    if len(value_str) > 8:
+        font_size = "22px"
+    else:
+        font_size = "34px"
+
     html = (
         '<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 24px 26px; height: 100%;">'
         '<div style="color: #64748B; font-size: 13px; font-weight: 500; margin-bottom: 12px;">' + label + '</div>'
-        '<div style="color: ' + accent + '; font-size: 34px; font-weight: 800; line-height: 1; font-family: Inter, sans-serif; letter-spacing: -0.02em;">' + str(value) + '</div>'
+        '<div style="color: ' + accent + '; font-size: ' + font_size + '; font-weight: 800; line-height: 1.1; font-family: Inter, sans-serif; letter-spacing: -0.02em; white-space: nowrap;">' + value_str + '</div>'
         + sub_html +
         '</div>'
     )
