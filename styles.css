@@ -12,7 +12,7 @@ html, body, [class*="css"] {
 .main .block-container {
     padding-top: 2rem;
     padding-bottom: 4rem;
-    max-width: 1180px;
+    max-width: 1400px;
 }
 
 #MainMenu, footer, header {
