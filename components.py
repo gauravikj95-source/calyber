@@ -1,4 +1,4 @@
-components_code = '''import streamlit as st
+import streamlit as st
 import plotly.graph_objects as go
 import pandas as pd
 
@@ -41,7 +41,7 @@ def hero_card(label, headline, description):
     html = (
         '<div style="background: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 16px; padding: 48px 44px; margin-bottom: 32px;">'
         '<div style="color: #64748B; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;">' + label + '</div>'
-        '<div style="font-family: Inter, sans-serif; font-size: 52px; font-weight: 900; color: #0F172A; line-height: 1.05; letter-spacing: -0.03em; margin-bottom: 20px; max-width: 720px;">' + headline + '</div>'
+        '<div style="font-family: Inter, sans-serif; font-size: 48px; font-weight: 900; color: #0F172A; line-height: 1.08; letter-spacing: -0.03em; margin-bottom: 20px; max-width: 800px;">' + headline + '</div>'
         '<div style="font-family: Inter, sans-serif; font-size: 15px; color: #64748B; line-height: 1.65; max-width: 640px;">' + description + '</div>'
         '</div>'
     )
@@ -49,9 +49,7 @@ def hero_card(label, headline, description):
 
 
 def section_label(text):
-    html = (
-        '<div style="color: #64748B; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;">' + text + '</div>'
-    )
+    html = '<div style="color: #64748B; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;">' + text + '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
 
@@ -96,9 +94,7 @@ def kpi_row(items):
 
 
 def card_label(label):
-    html = (
-        '<div style="color: #64748B; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">' + label + '</div>'
-    )
+    html = '<div style="color: #64748B; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 10px;">' + label + '</div>'
     st.markdown(html, unsafe_allow_html=True)
 
 
@@ -136,7 +132,7 @@ def comparison_card(left_title, left_value, right_title, right_value, savings=No
         savings_html = (
             '<div style="background: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 14px; padding: 18px 24px; margin-top: 20px; text-align: center;">'
             '<span style="color: #64748B; font-size: 13px; font-weight: 500;">You save</span>'
-            '<span style="color: #059669; font-size: 24px; font-weight: 800; margin-left: 12px; font-family: Inter, sans-serif;">₹' + str(savings) + '</span>'
+            '<span style="color: #059669; font-size: 24px; font-weight: 800; margin-left: 12px; font-family: Inter, sans-serif;">Rs ' + str(savings) + '</span>'
             '</div>'
         )
         st.markdown(savings_html, unsafe_allow_html=True)
@@ -238,14 +234,3 @@ def dual_bar_chart(data, x, y1, y2, label1="Baseline", label2="Calyber", height=
     layout["legend"] = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color="#64748B", size=11))
     fig.update_layout(**layout)
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-
-
-def form_card(func):
-    """Context manager that wraps content in a card-like container."""
-    return func
-'''
-
-with open('components.py', 'w') as f:
-    f.write(components_code)
-
-print("✅ components.py rebuilt")
