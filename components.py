@@ -48,6 +48,22 @@ def hero_card(label, headline, description):
     st.markdown(html, unsafe_allow_html=True)
 
 
+def section_hero(label, title, description):
+    """Editorial section header — like PriceLens/AERIS."""
+    html = (
+        '<div style="background: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 16px; padding: 44px 40px; margin-bottom: 32px;">'
+        '<div style="color: #64748B; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px;">' + label + '</div>'
+        '<div style="font-family: Inter, sans-serif; font-size: 44px; font-weight: 800; color: #0F172A; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 16px;">' + title + '</div>'
+        '<div style="font-family: Inter, sans-serif; font-size: 16px; color: #64748B; line-height: 1.6; max-width: 640px;">' + description + '</div>'
+        '</div>'
+    )
+    st.markdown(html, unsafe_allow_html=True)
+
+
+def section_divider():
+    st.markdown('<div style="height: 1px; background: #E5E7EB; margin: 8px 0 32px 0;"></div>', unsafe_allow_html=True)
+
+
 def section_label(text):
     html = '<div style="color: #64748B; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;">' + text + '</div>'
     st.markdown(html, unsafe_allow_html=True)
@@ -234,22 +250,3 @@ def dual_bar_chart(data, x, y1, y2, label1="Baseline", label2="Calyber", height=
     layout["legend"] = dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1, font=dict(color="#64748B", size=11))
     fig.update_layout(**layout)
     st.plotly_chart(fig, use_container_width=True, config={"displayModeBar": False})
-
-
-def centered_container():
-    """Returns a context for centered content."""
-    return st.container()
-
-def section_hero(label, title, description, height="medium"):
-    """Big editorial section header like PriceLens/AERIS."""
-    html = (
-        '<div style="background: #F8FAFC; border: 1px solid #E5E7EB; border-radius: 16px; padding: 44px 40px; margin-bottom: 32px;">'
-        '<div style="color: #64748B; font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 16px;">' + label + '</div>'
-        '<div style="font-family: Inter, sans-serif; font-size: 44px; font-weight: 800; color: #0F172A; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 16px;">' + title + '</div>'
-        '<div style="font-family: Inter, sans-serif; font-size: 16px; color: #64748B; line-height: 1.6; max-width: 640px;">' + description + '</div>'
-        '</div>'
-    )
-    st.markdown(html, unsafe_allow_html=True)
-
-def section_divider():
-    st.markdown('<div style="height: 1px; background: #E5E7EB; margin: 8px 0 32px 0;"></div>', unsafe_allow_html=True)
