@@ -202,11 +202,21 @@ label {
     border-color: #CBD5E1;
 }
 
-.stTabs [aria-selected="true"] {
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
     background: #0F172A !important;
-    color: #FFFFFF !important;
     border-color: #0F172A !important;
+}
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] p,
+.stTabs [data-baseweb="tab"][aria-selected="true"] div,
+.stTabs [data-baseweb="tab"][aria-selected="true"] span {
+    color: #FFFFFF !important;
     font-weight: 600 !important;
+}
+
+/* Also handle nested text elements */
+.stTabs [data-baseweb="tab"][aria-selected="true"] * {
+    color: #FFFFFF !important;
 }
 
 .stTabs [data-baseweb="tab-highlight"] {
