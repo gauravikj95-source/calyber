@@ -193,6 +193,7 @@ label {
     border: 1px solid #E5E7EB;
     transition: all 0.15s ease;
     height: auto;
+    letter-spacing: -0.005em;
 }
 
 .stTabs [data-baseweb="tab"]:hover {
@@ -219,6 +220,7 @@ label {
 .stTabs [role="tabpanel"] {
     padding-top: 8px;
 }
+
 /* ============================================================
    RADIO BUTTONS
    ============================================================ */
@@ -319,14 +321,14 @@ hr {
 }
 
 /* ============================================================
-   HIDE STREAMLIT DEFAULT SPINNER COLOR
+   SPINNER
    ============================================================ */
 .stSpinner > div {
     border-color: #DC2626 transparent transparent transparent;
 }
 
 /* ============================================================
-   METRIC WIDGET (native st.metric — kept minimal)
+   METRICS (native)
    ============================================================ */
 [data-testid="stMetricValue"] {
     font-family: 'Inter', sans-serif;
