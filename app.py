@@ -23,12 +23,16 @@ from components import (
 
 st.set_page_config(page_title="Calyber", layout="wide", initial_sidebar_state="collapsed")
 
+
 def load_css():
     p = os.path.join(BASE_DIR, "styles.css")
     if os.path.exists(p):
         with open(p) as f:
             st.markdown("<style>" + f.read() + "</style>", unsafe_allow_html=True)
+
+
 load_css()
+
 
 @st.cache_data
 def load_data():
@@ -40,6 +44,7 @@ def load_data():
         pd.read_csv(os.path.join(BASE_DIR, "pbi_demand.csv"))
     )
 
+
 @st.cache_resource
 def load_model_data():
     try:
@@ -49,21 +54,27 @@ def load_model_data():
     except Exception:
         return None
 
+
 trips_df, captive_df, weather_df, kpi_df, demand_df = load_data()
 model_data = load_model_data()
 
 if "section" not in st.session_state:
     st.session_state.section = "Overview"
 
-nav_items = ["Overview", "Predict", "Decide", "Compare", "Data"]
-nav_cols = st.columns(len(nav_items), gap="small")
-for col, item in zip(nav_cols, nav_items):
-    with col:
-        if st.button(item, key="nav_" + item, use_container_width=True):
-            st.session_state.section = item
-            st.rerun()
 
-st.markdown("---")
+# ============================================================
+# NAVIGATION (rendered inside each section)
+# ============================================================
+def render_nav():
+    nav_items = ["Overview", "Predict", "Decide", "Compare", "Data"]
+    cols = st.columns([1, 1, 1, 1, 1], gap="small")
+    for col, item in zip(cols, nav_items):
+        with col:
+            is_active = st.session_state.section == item
+            btn_type = "primary" if is_active else "secondary"
+            if st.button(item, key="nav_" + item, use_container_width=True, type=btn_type):
+                st.session_state.section = item
+                st.rerun()
 
 
 # ============================================================
@@ -75,6 +86,10 @@ if st.session_state.section == "Overview":
         "Fair Pricing Intelligence for Mumbai Ride-Hailing",
         "Detecting unfair surge pricing from 54,132 trips using machine learning and fairness-aware policy design."
     )
+
+    render_nav()
+
+    st.markdown("---")
 
     hero_card(
         "THE PROBLEM",
@@ -107,6 +122,8 @@ if st.session_state.section == "Overview":
 # PREDICT
 # ============================================================
 elif st.session_state.section == "Predict":
+    render_nav()
+    st.markdown("---")
     section_header("Predict", "Six prediction tools powered by historical Mumbai data.")
 
     tabs = st.tabs(["Fare Forecast", "Fairness Score", "Wait Time", "Cancellation Risk", "Surge Timing", "Anomaly Detection"])
@@ -241,6 +258,8 @@ elif st.session_state.section == "Predict":
 # DECIDE
 # ============================================================
 elif st.session_state.section == "Decide":
+    render_nav()
+    st.markdown("---")
     section_header("Decide", "Three tools to help you make the best choice.")
 
     tabs = st.tabs(["Vehicle Recommender", "Route Comparison", "What-If Explorer"])
@@ -314,6 +333,8 @@ elif st.session_state.section == "Decide":
 # COMPARE
 # ============================================================
 elif st.session_state.section == "Compare":
+    render_nav()
+    st.markdown("---")
     section_header("Compare", "See how Calyber changes the pricing.")
 
     tabs = st.tabs(["Policy Simulator", "Fairness Analysis"])
@@ -370,6 +391,8 @@ elif st.session_state.section == "Compare":
 # DATA
 # ============================================================
 elif st.session_state.section == "Data":
+    render_nav()
+    st.markdown("---")
     section_header("Data Explorer", "Explore 54,132 Mumbai trips.")
 
     col1, col2, col3 = st.columns(3, gap="medium")
