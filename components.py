@@ -85,7 +85,7 @@ def kpi_card(label, value, subtext=None, color=None):
     accent = color or COLORS["text"]
     sub_html = ""
     if subtext:
-        sub_html = '<div style="color: #94A3B8; font-size: 15px; margin-top: 8px;">' + subtext + '</div>'
+        sub_html = '<div style="color: #94A3B8; font-size: 20px; margin-top: 8px;">' + subtext + '</div>'
     html = (
         '<div style="background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 24px 26px; height: 100%;">'
         '<div style="color: #64748B; font-size: 13px; font-weight: 500; margin-bottom: 12px;">' + label + '</div>'
