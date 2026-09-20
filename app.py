@@ -1,4 +1,4 @@
-app_content = r'''import streamlit as st
+import streamlit as st
 import pandas as pd
 import plotly.graph_objects as go
 import sys
@@ -55,16 +55,15 @@ model_data = load_model_data()
 if "section" not in st.session_state:
     st.session_state.section = "Overview"
 
-# ============================================================
-# NAVIGATION (minimal, outline buttons)
-# ============================================================
 nav_items = ["Overview", "Predict", "Decide", "Compare", "Data"]
 nav_cols = st.columns(len(nav_items), gap="small")
-for col, item in zip(nav_cols, items := nav_items):
+for col, item in zip(nav_cols, nav_items):
     with col:
         if st.button(item, key="nav_" + item, use_container_width=True):
             st.session_state.section = item
             st.rerun()
+
+st.markdown("---")
 
 
 # ============================================================
@@ -80,7 +79,7 @@ if st.session_state.section == "Overview":
     hero_card(
         "THE PROBLEM",
         "Mumbai riders pay 34.79% above base fare on average. During storms, that jumps to 77.83%.",
-        "Riders with no alternatives pay the most. This is not an accident — it is a pattern embedded in the pricing algorithm. Calyber exposes it and models a fairer alternative."
+        "Riders with no alternatives pay the most. This is not an accident. It is a pattern embedded in the pricing algorithm. Calyber exposes it and models a fairer alternative."
     )
 
     kpi_row([
@@ -112,25 +111,19 @@ elif st.session_state.section == "Predict":
 
     tabs = st.tabs(["Fare Forecast", "Fairness Score", "Wait Time", "Cancellation Risk", "Surge Timing", "Anomaly Detection"])
 
-    # --- Fare Forecast ---
     with tabs[0]:
         st.markdown("### Fare Forecast")
         st.markdown("Predict your fare for the next 2 hours.")
-
         col1, col2 = st.columns([1, 2], gap="large")
-
         with col1:
             distance = st.number_input("Distance (km)", 1.0, 30.0, 7.0, 0.5, key="ff_dist")
             vehicle = st.selectbox("Vehicle type", ["Bike", "Auto", "Mini", "Sedan", "SUV", "Prime"], index=2, key="ff_veh")
             hour = st.selectbox("Current hour", list(range(24)), index=17, key="ff_hour")
             weather = st.selectbox("Weather", ["Clear", "Cloudy", "Foggy", "Rainy", "Stormy"], index=3, key="ff_weather")
             predict_btn = st.button("Predict Fare", key="ff_btn", use_container_width=True)
-
         with col2:
             if predict_btn:
-                r = predict_fare_forecast("Andheri", "BKC", distance, vehicle, hour, weather, "Monday")
-                st.session_state.ff_result = r
-
+                st.session_state.ff_result = predict_fare_forecast("Andheri", "BKC", distance, vehicle, hour, weather, "Monday")
             if "ff_result" in st.session_state:
                 r = st.session_state.ff_result
                 kpi_row([
@@ -143,22 +136,18 @@ elif st.session_state.section == "Predict":
                 fdf = pd.DataFrame(r["forecasts"])
                 line_chart(fdf, "time_label", "fare", color="#0F172A", height=340)
 
-    # --- Fairness Score ---
     with tabs[1]:
         st.markdown("### Fairness Score")
         st.markdown("Will this ride be fair?")
-
         col1, col2 = st.columns([1, 2], gap="large")
         with col1:
             f_hour = st.selectbox("Hour", list(range(24)), index=18, key="fs_hour")
             f_weather = st.selectbox("Weather", ["Clear", "Cloudy", "Foggy", "Rainy", "Stormy"], index=4, key="fs_weather")
             f_captive = st.selectbox("Captive quartile", ["Low", "Medium", "High", "Extreme"], index=3, key="fs_captive")
             fs_btn = st.button("Calculate Fairness", key="fs_btn", use_container_width=True)
-
         with col2:
             if fs_btn:
                 st.session_state.fs_result = predict_fairness_score(f_weather, f_hour, f_captive, "Mini")
-
             if "fs_result" in st.session_state:
                 r = st.session_state.fs_result
                 c1, c2 = st.columns([1, 1], gap="large")
@@ -170,7 +159,6 @@ elif st.session_state.section == "Predict":
                         {"label": "Premium", "value": str(r["premium_pct"]) + "%", "color": r["color"]},
                     ])
 
-    # --- Wait Time ---
     with tabs[2]:
         st.markdown("### Wait Time Forecast")
         col1, col2 = st.columns([1, 2], gap="large")
@@ -189,7 +177,6 @@ elif st.session_state.section == "Predict":
                     {"label": "Range", "value": str(r["wait_range"][0]) + "-" + str(r["wait_range"][1]) + " min"},
                 ])
 
-    # --- Cancellation Risk ---
     with tabs[3]:
         st.markdown("### Cancellation Risk")
         col1, col2 = st.columns([1, 2], gap="large")
@@ -207,3 +194,202 @@ elif st.session_state.section == "Predict":
                 kpi_row([
                     {"label": "Cancellation Risk", "value": str(r["risk_pct"]) + "%", "color": r["color"]},
                     {"label": "Level", "value": r["level"], "color": r["color"]},
+                ])
+
+    with tabs[4]:
+        st.markdown("### Surge Timing")
+        col1, col2 = st.columns([1, 2], gap="large")
+        with col1:
+            s_weather = st.selectbox("Weather", ["Clear", "Cloudy", "Foggy", "Rainy", "Stormy"], index=3, key="st_weather")
+            s_day = st.selectbox("Day", ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"], key="st_day")
+        with col2:
+            r = predict_surge_timing(s_weather, s_day)
+            tdf = pd.DataFrame(r["timeline"])
+            line_chart(tdf, "time_label", "surge", color="#DC2626", height=340)
+            kpi_row([
+                {"label": "Peak Hour", "value": r["peak_hour"], "color": "#DC2626"},
+                {"label": "Peak Surge", "value": str(r["peak_surge"]) + "x", "color": "#DC2626"},
+                {"label": "Lowest Hour", "value": r["lowest_hour"], "color": "#059669"},
+                {"label": "Lowest Surge", "value": str(r["lowest_surge"]) + "x", "color": "#059669"},
+            ])
+
+    with tabs[5]:
+        st.markdown("### Anomaly Detection")
+        st.markdown("Is your fare suspicious?")
+        col1, col2 = st.columns([1, 2], gap="large")
+        with col1:
+            actual_fare = st.number_input("Actual fare paid (Rs)", 10.0, 5000.0, 420.0, 10.0, key="an_fare")
+            a_distance = st.number_input("Distance (km)", 1.0, 30.0, 7.0, 0.5, key="an_dist")
+            a_vehicle = st.selectbox("Vehicle", ["Bike", "Auto", "Mini", "Sedan", "SUV", "Prime"], index=2, key="an_veh")
+            a_weather = st.selectbox("Weather", ["Clear", "Cloudy", "Foggy", "Rainy", "Stormy"], index=4, key="an_weather")
+            a_hour = st.selectbox("Hour", list(range(24)), index=18, key="an_hour")
+            an_btn = st.button("Check Fare", key="an_btn", use_container_width=True)
+        with col2:
+            if an_btn:
+                st.session_state.an_result = detect_anomaly(actual_fare, a_distance, a_vehicle, a_weather, a_hour)
+            if "an_result" in st.session_state:
+                r = st.session_state.an_result
+                kpi_row([
+                    {"label": "Status", "value": r["status"], "color": r["color"]},
+                    {"label": "Actual Fare", "value": "Rs " + str(r["actual_fare"])},
+                    {"label": "Expected Fare", "value": "Rs " + str(r["expected_fare"]), "color": "#059669"},
+                    {"label": "Deviation", "value": str(r["deviation_pct"]) + "%", "color": r["color"]},
+                ])
+
+
+# ============================================================
+# DECIDE
+# ============================================================
+elif st.session_state.section == "Decide":
+    section_header("Decide", "Three tools to help you make the best choice.")
+
+    tabs = st.tabs(["Vehicle Recommender", "Route Comparison", "What-If Explorer"])
+
+    with tabs[0]:
+        st.markdown("### Vehicle Recommender")
+        col1, col2 = st.columns([1, 2], gap="large")
+        with col1:
+            v_distance = st.number_input("Distance (km)", 1.0, 30.0, 7.0, 0.5, key="vr_dist")
+            v_priority = st.radio("Priority", ["cheapest", "fastest", "fairest"], horizontal=True, key="vr_priority")
+            v_hour = st.selectbox("Hour", list(range(24)), index=18, key="vr_hour")
+            v_weather = st.selectbox("Weather", ["Clear", "Cloudy", "Foggy", "Rainy", "Stormy"], index=3, key="vr_weather")
+            vr_btn = st.button("Recommend", key="vr_btn", use_container_width=True)
+        with col2:
+            if vr_btn:
+                st.session_state.vr_result = recommend_vehicle(v_distance, v_priority, v_hour, v_weather)
+            if "vr_result" in st.session_state:
+                r = st.session_state.vr_result
+                rec = r["recommended"]
+                kpi_row([
+                    {"label": "Recommended", "value": rec["vehicle"], "color": "#059669"},
+                    {"label": "Fare", "value": "Rs " + str(rec["fare"])},
+                    {"label": "Wait", "value": str(rec["wait"]) + " min"},
+                ])
+                st.markdown("#### All options")
+                st.dataframe(pd.DataFrame(r["all_options"]), use_container_width=True)
+
+    with tabs[1]:
+        st.markdown("### Route Comparison")
+        col1, col2 = st.columns([1, 2], gap="large")
+        with col1:
+            r_distance = st.number_input("Distance (km)", 1.0, 30.0, 7.2, 0.1, key="rc_dist")
+            r_vehicle = st.selectbox("Vehicle", ["Bike", "Auto", "Mini", "Sedan", "SUV", "Prime"], index=2, key="rc_veh")
+            r_hour = st.selectbox("Hour", list(range(24)), index=18, key="rc_hour")
+            r_weather = st.selectbox("Weather", ["Clear", "Cloudy", "Foggy", "Rainy", "Stormy"], index=3, key="rc_weather")
+            rc_btn = st.button("Compare", key="rc_btn", use_container_width=True)
+        with col2:
+            if rc_btn:
+                st.session_state.rc_result = compare_route(r_distance, r_vehicle, r_hour, r_weather)
+            if "rc_result" in st.session_state:
+                r = st.session_state.rc_result
+                kpi_row([
+                    {"label": "Predicted Fare", "value": "Rs " + str(r["predicted_fare"])},
+                    {"label": "Historical Average", "value": "Rs " + str(r["historical_avg"])},
+                    {"label": "Disparity", "value": str(r["disparity_pct"]) + "%", "color": r["color"]},
+                    {"label": "Status", "value": r["status"], "color": r["color"]},
+                ])
+
+    with tabs[2]:
+        st.markdown("### What-If Explorer")
+        col1, col2 = st.columns([1, 2], gap="large")
+        with col1:
+            wi_distance = st.number_input("Distance (km)", 1.0, 30.0, 7.0, 0.5, key="wi_dist")
+            wi_vehicle = st.selectbox("Vehicle", ["Bike", "Auto", "Mini", "Sedan", "SUV", "Prime"], index=2, key="wi_veh")
+            wi_hour = st.selectbox("Hour", list(range(24)), index=18, key="wi_hour")
+            wi_weather = st.selectbox("Weather", ["Clear", "Cloudy", "Foggy", "Rainy", "Stormy"], index=4, key="wi_weather")
+            wi_captive = st.selectbox("Captive quartile", ["Low", "Medium", "High", "Extreme"], index=3, key="wi_captive")
+            wi_btn = st.button("Explore", key="wi_btn", use_container_width=True)
+        with col2:
+            if wi_btn:
+                st.session_state.wi_result = what_if_analysis(wi_distance, wi_vehicle, wi_hour, wi_weather, wi_captive)
+            if "wi_result" in st.session_state:
+                r = st.session_state.wi_result
+                kpi_card("Current Fare", "Rs " + str(r["current_fare"]), color="#DC2626")
+                st.markdown("#### Scenarios")
+                for s in r["scenarios"]:
+                    st.markdown("- **" + s["label"] + "**: Rs " + str(s["fare"]) + " (" + str(s["change"]) + ")")
+
+
+# ============================================================
+# COMPARE
+# ============================================================
+elif st.session_state.section == "Compare":
+    section_header("Compare", "See how Calyber changes the pricing.")
+
+    tabs = st.tabs(["Policy Simulator", "Fairness Analysis"])
+
+    with tabs[0]:
+        st.markdown("### Policy Simulator")
+        col1, col2 = st.columns([1, 2], gap="large")
+        with col1:
+            p_distance = st.number_input("Distance (km)", 1.0, 30.0, 7.0, 0.5, key="ps_dist")
+            p_vehicle = st.selectbox("Vehicle", ["Bike", "Auto", "Mini", "Sedan", "SUV", "Prime"], index=2, key="ps_veh")
+            p_hour = st.selectbox("Hour", list(range(24)), index=18, key="ps_hour")
+            p_weather = st.selectbox("Weather", ["Clear", "Cloudy", "Foggy", "Rainy", "Stormy"], index=4, key="ps_weather")
+            p_captive = st.selectbox("Captive quartile", ["Low", "Medium", "High", "Extreme"], index=3, key="ps_captive")
+            ps_btn = st.button("Compare Policies", key="ps_btn", use_container_width=True)
+        with col2:
+            if ps_btn:
+                st.session_state.ps_result = {
+                    "baseline": _calc_scenario(p_distance, p_vehicle, p_hour, p_weather, p_captive, apply_policy=False),
+                    "calyber": _calc_scenario(p_distance, p_vehicle, p_hour, p_weather, p_captive, apply_policy=True)
+                }
+            if "ps_result" in st.session_state:
+                r = st.session_state.ps_result
+                comparison_card(
+                    "Baseline (Current System)", "Rs " + str(r["baseline"]["fare"]),
+                    "Calyber (Fair Policy)", "Rs " + str(r["calyber"]["fare"]),
+                    savings=round(r["baseline"]["fare"] - r["calyber"]["fare"], 2)
+                )
+                st.markdown("#### Surge comparison")
+                metric_row([
+                    {"label": "Baseline Surge", "value": str(r["baseline"]["surge"]) + "x", "color": "#DC2626"},
+                    {"label": "Calyber Surge", "value": str(r["calyber"]["surge"]) + "x", "color": "#059669"},
+                ])
+
+    with tabs[1]:
+        st.markdown("### Fairness Analysis")
+        st.markdown("Where does the pricing system fail?")
+        col1, col2 = st.columns(2, gap="large")
+        with col1:
+            st.markdown("#### Surge by Weather")
+            bar_chart(weather_df, "Weather", "Baseline_Surge", color="#D97706", height=300)
+        with col2:
+            st.markdown("#### Surge by Captive Quartile")
+            bar_chart(captive_df, "Captive_Quartile", "Baseline_Surge", color="#DC2626", height=300)
+        st.markdown("#### Baseline vs Calyber by Captive Quartile")
+        dual_bar_chart(captive_df, "Captive_Quartile", "Baseline_Surge", "Calyber_Surge", height=340)
+        callout(
+            "Key Finding",
+            "Extreme captive riders pay 43.7% more surge than low captive riders. This is systemic.",
+            color="#DC2626"
+        )
+
+
+# ============================================================
+# DATA
+# ============================================================
+elif st.session_state.section == "Data":
+    section_header("Data Explorer", "Explore 54,132 Mumbai trips.")
+
+    col1, col2, col3 = st.columns(3, gap="medium")
+    with col1:
+        weather_filter = st.selectbox("Weather", ["All"] + list(trips_df["Weather_Condition"].unique()), key="d_weather")
+    with col2:
+        captive_filter = st.selectbox("Captive Quartile", ["All"] + list(trips_df["captive_quartile"].unique()), key="d_captive")
+    with col3:
+        vehicle_filter = st.selectbox("Vehicle", ["All"] + list(trips_df["Vehicle_Type"].unique()), key="d_vehicle")
+
+    filtered = trips_df.copy()
+    if weather_filter != "All":
+        filtered = filtered[filtered["Weather_Condition"] == weather_filter]
+    if captive_filter != "All":
+        filtered = filtered[filtered["captive_quartile"] == captive_filter]
+    if vehicle_filter != "All":
+        filtered = filtered[filtered["Vehicle_Type"] == vehicle_filter]
+
+    st.markdown("**Showing " + str(len(filtered)) + " of " + str(len(trips_df)) + " trips**")
+
+    display_cols = ["Trip_ID", "Weather_Condition", "Vehicle_Type", "Distance_KM", "Surge_Multiplier", "Total_Fare", "captive_quartile", "fairness_band"]
+    display_cols = [c for c in display_cols if c in filtered.columns]
+    st.dataframe(filtered[display_cols].head(500), use_container_width=True, height=500)
